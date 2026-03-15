@@ -1,13 +1,13 @@
 import Hero from "@/components/Hero";
+import ShoeFeatures from "@/components/ShoeFeatures";
+import Footer from "@/components/Footer"; // Import it
 
 export default function Home() {
   return (
-    <main>
+    <main className="min-h-screen bg-[#050505]">
       <Hero />
-      {/* You can add more components here later, like <Features /> or <Archive /> */}
-      <section className="h-screen bg-white flex items-center justify-center">
-        <h2 className="text-4xl font-bold">More content here...</h2>
-      </section>
+      <ShoeFeatures />
+      <Footer /> {/* Add it at the end */}
     </main>
   );
 }

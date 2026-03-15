@@ -10,30 +10,52 @@ if (typeof window !== "undefined") {
 }
 
 export default function Hero() {
-  const container = useRef(null);
-  const shoeRef = useRef(null);
+  const container = useRef<HTMLElement>(null);
+  const shoeRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
 
   useGSAP(
     () => {
-      // Subtle float
+      // 1. AGGRESSIVE "SLAM" ENTRY ANIMATION
+      const tl = gsap.timeline();
+
+      tl.from(titleRef.current, {
+        letterSpacing: "-2vw", // Text starts crunched together
+        scale: 0.8,
+        opacity: 0,
+        duration: 1.5,
+        ease: "power4.out",
+      }).from(
+        shoeRef.current,
+        {
+          scale: 2, // Shoe starts massive
+          y: -100,
+          opacity: 0,
+          duration: 1.2,
+          ease: "back.out(1.5)", // Gives it that heavy basketball "bounce"
+        },
+        "-=1.2",
+      );
+
+      // 2. TIGHT HOVER FLOAT
       gsap.to(shoeRef.current, {
         y: -15,
-        duration: 2.5,
-        ease: "sine.inOut",
+        duration: 2,
+        ease: "power1.inOut",
         repeat: -1,
         yoyo: true,
       });
 
-      // Subtler Scroll: Small tilt and slight slide
+      // 3. SCROLL TRANSITION
       gsap.to(shoeRef.current, {
-        rotate: 15, // Reduced from 360
-        x: 50, // Small horizontal shift
-        scale: 1.1,
+        rotateZ: -15, // Keeps the slight tilt
+
         scrollTrigger: {
           trigger: container.current,
           start: "top top",
-          end: "bottom center",
+          end: "+=100%",
           scrub: 1,
+          pin: true,
         },
       });
     },
@@ -43,20 +65,34 @@ export default function Hero() {
   return (
     <section
       ref={container}
-      className="h-screen flex items-center justify-center bg-slate-50 relative overflow-hidden"
+      // Tailwind classes that react to the Dark Mode toggle
+      // Change it to exactly this:
+      className="h-screen w-full flex items-center justify-center overflow-hidden relative bg-[#050505]"
     >
-      <h1 className="absolute text-[20vw] font-black opacity-10 italic select-none">
-        NIKE
+      {/* MASSIVE BACKGROUND TEXT */}
+      <h1
+        ref={titleRef}
+        // Change it to exactly this:
+        className="absolute text-[20vw] font-black italic uppercase select-none pointer-events-none z-0 text-[#111]"
+      >
+        JORDAN
       </h1>
-      <div ref={shoeRef} className="z-10 drop-shadow-2xl">
+
+      {/* THE RED GLOW (Matches the shoe) */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40vw] h-[40vw] bg-red-600/30 dark:bg-red-600/40 blur-[120px] rounded-full pointer-events-none z-0 transition-colors duration-700"></div>
+
+      {/* THE SHOE */}
+      <div ref={shoeRef} className="z-10 relative flex flex-col items-center">
         <Image
           src="/AIR1.png"
-          alt="Shoe"
-          width={700}
-          height={700}
+          alt="Air Jordan 13"
+          width={900}
+          height={900}
           priority
-          className="rotate-[-10deg]"
+          className="w-70 md:w-150 lg:w-200 h-auto object-contain pointer-events-none drop-shadow-[0_40px_40px_rgba(0,0,0,0.3)] dark:drop-shadow-[0_40px_40px_rgba(220,38,38,0.15)]"
         />
+        {/* Dynamic Shadow */}
+        <div className="w-[70%] h-6 bg-black/40 dark:bg-black/80 blur-xl rounded-[100%] absolute -bottom-12 pointer-events-none transition-colors duration-700"></div>
       </div>
     </section>
   );
