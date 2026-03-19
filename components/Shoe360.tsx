@@ -79,7 +79,7 @@ export default function Shoe360() {
         360 VIEW
       </h1>
 
-      {/* The HTML Canvas where the images are drawn */}
+      {/* The HTML Canvas where the images are drawnn */}
       <canvas
         ref={canvasRef}
         width={1000}
